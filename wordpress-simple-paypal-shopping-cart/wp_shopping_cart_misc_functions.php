@@ -20,6 +20,9 @@ function wp_cart_init_handler()
             exit;
         }
     }
+    if (is_admin()) {
+        add_action('admin_init','wp_cart_add_tinymce_button');
+    }
 }
 
 function wp_cart_admin_init_handler()
