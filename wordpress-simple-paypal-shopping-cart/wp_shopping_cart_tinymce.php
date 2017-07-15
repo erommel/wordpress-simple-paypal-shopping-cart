@@ -50,7 +50,7 @@ function wp_cart_tinymce_ajax_handler() {
         function ui_for_ppsc_insert_content() {
             var extra = '';
             var content;
-            var template = '<p>[wp_cart:%%PRODUCT-NAME%%:price:%%PRODUCT-PRICE%%%%EXTRA%%:end]</p>';
+            var template = '<p>[wp_cart_button name="%%PRODUCT-NAME%%" price="%%PRODUCT-PRICE%%"%%EXTRA%%]</p>';
 
             var wpsppsc = document.getElementById('wpsppsc_panel');
 
@@ -100,28 +100,28 @@ function wp_cart_tinymce_ajax_handler() {
                 shipping = shipping || 0;
 
                 if (shipping) {
-                    extra += ':shipping:' + shipping;
+                    extra += ' shipping="' + shipping + '"';
                 }
 
                 // eg. left_bracket2wp_cart:Demo Product 1:price:15:var1[Size|Small|Medium|Large]:end]
                 if (sizes) {
-                    extra += ':var' + seq + '[Size|' + sizes + ']';
+                    extra += ' var' + seq + '="Size|' + sizes + '"';
                     seq++;
                 }
 
                 if (colors) {
-                    extra += ':var' + seq + '[Colour|' + colors + ']';
+                    extra += ' var' + seq + '="Colour|' + colors + '"';
                     seq++;
                 }
 
                 // e.g. custom1_id: Format | custom1_vals: PAL, Secam
                 if (custom1_id) {
-                    extra += ':var' + seq + '[' + custom1_id + '|' + custom1_vals + ']';
+                    extra += ' var' + seq + '="' + custom1_id + '|' + custom1_vals + '"';
                     seq++;
                 }
 
                 if (custom2_id) {
-                    extra += ':var' + seq + '[' + custom2_id + '|' + custom2_vals + ']';
+                    extra += ' var' + seq + '="' + custom2_id + '|' + custom2_vals + '"';
                     seq++;
                 }
 
@@ -145,7 +145,7 @@ function wp_cart_tinymce_ajax_handler() {
                 <table border="0" cellpadding="4" cellspacing="0">
                     <tr>
                         <td nowrap="nowrap">
-                            <label for="wpsppsc_product_name"><?php _e("Product Name", 'WPSPPSC'); ?></label>
+                            <label for="wpsppsc_product_name"><?php _e("Product Name", 'wordpress-simple-paypal-shopping-cart'); ?></label>
                         </td>
                         <td>
                             <input type="text" id="wpsppsc_product_name" name="wpsppsc_product_name" value="" />
@@ -156,7 +156,7 @@ function wp_cart_tinymce_ajax_handler() {
                     </tr>
                     <tr>
                         <td nowrap="nowrap">
-                            <label for="wpsppsc_product_price"><?php _e("Price", 'WPSPPSC'); ?></label>
+                            <label for="wpsppsc_product_price"><?php _e("Price", 'wordpress-simple-paypal-shopping-cart'); ?></label>
                         </td>
                         <td>
                             <input type="text" id="wpsppsc_product_price" name="wpsppsc_product_price" value="" />
@@ -167,7 +167,7 @@ function wp_cart_tinymce_ajax_handler() {
                     </tr>
                     <tr>
                         <td nowrap="nowrap">
-                            <label for="wpsppsc_shipping"><?php _e("Shipping", 'WPSPPSC'); ?></label>
+                            <label for="wpsppsc_shipping"><?php _e("Shipping", 'wordpress-simple-paypal-shopping-cart'); ?></label>
                         </td>
                         <td>
                             <input type="text" id="wpsppsc_shipping" name="wpsppsc_shipping" value="" />
@@ -178,7 +178,7 @@ function wp_cart_tinymce_ajax_handler() {
                     </tr>
                     <tr>
                         <td nowrap="nowrap">
-                            <label for="wpsppsc_sizes"><?php _e("Sizes", 'WPSPPSC'); ?></label>
+                            <label for="wpsppsc_sizes"><?php _e("Sizes", 'wordpress-simple-paypal-shopping-cart'); ?></label>
                         </td>
                         <td>
                             <input type="text" id="wpsppsc_sizes" name="wpsppsc_sizes" value="" />
@@ -189,7 +189,7 @@ function wp_cart_tinymce_ajax_handler() {
                     </tr>
                     <tr>
                         <td nowrap="nowrap">
-                            <label for="wpsppsc_colors"><?php _e("Colours", 'WPSPPSC'); ?></label>
+                            <label for="wpsppsc_colors"><?php _e("Colours", 'wordpress-simple-paypal-shopping-cart'); ?></label>
                         </td>
                         <td>
                             <input type="text" id="wpsppsc_colors" name="wpsppsc_colors" value="" />
@@ -207,23 +207,23 @@ function wp_cart_tinymce_ajax_handler() {
                     </tr>
                     <tr>
                         <td nowrap="nowrap">
-                            <label for="wpsppsc_colors"><?php _e("Custom 1: Name", 'WPSPPSC'); ?></label>
+                            <label for="wpsppsc_colors"><?php _e("Custom 1: Name", 'wordpress-simple-paypal-shopping-cart'); ?></label>
                         </td>
                         <td><input type="text" id="wpsppsc_custom1_id" name="wpsppsc_custom1_id" value="" />
                         </td>
                         <td>
-                            <?php _e("Values", 'WPSPPSC'); ?>
+                            <?php _e("Values", 'wordpress-simple-paypal-shopping-cart'); ?>
                             <input type="text" id="wpsppsc_custom1_values" name="wpsppsc_custom1_values" value="" />
                         </td>
                     </tr>
                     <tr>
                         <td nowrap="nowrap">
-                            <label for="wpsppsc_colors"><?php _e("Custom 2: Name", 'WPSPPSC'); ?></label>
+                            <label for="wpsppsc_colors"><?php _e("Custom 2: Name", 'wordpress-simple-paypal-shopping-cart'); ?></label>
                         </td>
                         <td><input type="text" id="wpsppsc_custom2_id" name="wpsppsc_custom2_id" value="" />
                         </td>
                         <td>
-                            <?php _e("Values", 'WPSPPSC'); ?>
+                            <?php _e("Values", 'wordpress-simple-paypal-shopping-cart'); ?>
                             <input type="text" id="wpsppsc_custom2_values" name="wpsppsc_custom2_values" value="" />
                         </td>
                     </tr>
@@ -240,14 +240,14 @@ function wp_cart_tinymce_ajax_handler() {
 
 
                 <div style="float: left">
-                    <input type="submit" id="insert" name="insert" value="<?php _e("Insert", 'WPSPPSC'); ?>"
+                    <input type="submit" id="insert" name="insert" value="<?php _e("Insert", 'wordpress-simple-paypal-shopping-cart'); ?>"
                            class='app_positive_button  mceButton'
                            onclick="ui_for_ppsc_insert_content();
                                        return false;" />
                 </div>
 
                 <div style="float: right">
-                    <input type="button" id="cancel" name="cancel" value="<?php _e("Cancel", 'WPSPPSC'); ?>"
+                    <input type="button" id="cancel" name="cancel" value="<?php _e("Cancel", 'wordpress-simple-paypal-shopping-cart'); ?>"
                            class='app_negative_button'
                            onclick="tb_remove();" />
                 </div>
