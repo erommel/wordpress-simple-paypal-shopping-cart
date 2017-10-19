@@ -221,14 +221,14 @@ function wpspc_populate_order_columns($column, $post_id) {
     }
 }
 
+add_filter('post_type_link', "wpspsc_customize_order_link", 10, 2);
+
 function wpspsc_customize_order_link($permalink, $post) {
-    if ($post->post_type == 'wpsc_cart_orders') { // assuming the post type is video
+    if ($post->post_type == 'wpsc_cart_orders') { //The post type is cart orders
         $permalink = get_admin_url() . 'post.php?post=' . $post->ID . '&action=edit';
     }
     return $permalink;
 }
-
-add_filter('post_type_link', "wpspsc_customize_order_link", 10, 2);
 
 add_filter('posts_join', 'wp_cart_search_join');
 

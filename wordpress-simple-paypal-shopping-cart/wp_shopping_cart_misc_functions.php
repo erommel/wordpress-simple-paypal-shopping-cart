@@ -145,7 +145,7 @@ function wpspc_update_cart_items_record()
     }
 }
 
-function wpspc_apply_dynamic_tags_on_email_body($ipn_data, $args)
+function wpspc_apply_dynamic_tags_on_email($text, $ipn_data, $args)
 {
     $order_id = $args['order_id'];
     $purchase_amount = get_post_meta( $order_id, 'wpsc_total_amount', true );
@@ -153,7 +153,7 @@ function wpspc_apply_dynamic_tags_on_email_body($ipn_data, $args)
     $tags = array("{first_name}","{last_name}","{product_details}","{payer_email}","{transaction_id}","{purchase_amt}","{purchase_date}","{coupon_code}","{address}","{phone}");
     $vals = array($ipn_data['first_name'], $ipn_data['last_name'], $args['product_details'], $args['payer_email'], $ipn_data['txn_id'], $purchase_amount, $purchase_date, $args['coupon_code'], $args['address'], $ipn_data['contact_phone']);
 
-    $body = stripslashes(str_replace($tags, $vals, $args['email_body']));
+    $body = stripslashes(str_replace($tags, $vals, $text));
     return $body;
 }
 
@@ -194,7 +194,7 @@ function wpspc_run_activation()
 function wpspsc_settings_menu_footer()
 {
     ?>
-    <div style="background: none repeat scroll 0 0 #FFF6D5;border: 1px solid #D1B655;color: #3F2502;margin: 10px 0;padding: 5px 5px 5px 10px;text-shadow: 1px 1px #FFFFFF;">	
+    <div class="wspsc_yellow_box">
     <p><?php _e("Need a shopping cart plugin with a lot of features and good support? Check out our ", "wordpress-simple-paypal-shopping-cart"); ?>
     <a href="https://www.tipsandtricks-hq.com/?p=1059" target="_blank"><?php _e("WP eStore Plugin", "wordpress-simple-paypal-shopping-cart"); ?></a></p>
     </div>

@@ -263,9 +263,11 @@ class paypal_ipn_handler {
         
         $from_email = get_option('wpspc_buyer_from_email');
         $subject = get_option('wpspc_buyer_email_subj');
+	$subject = wpspc_apply_dynamic_tags_on_email($subject, $this->ipn_data, $args);
+	
         $body = get_option('wpspc_buyer_email_body');
         $args['email_body'] = $body;
-        $body = wpspc_apply_dynamic_tags_on_email_body($this->ipn_data, $args);
+        $body = wpspc_apply_dynamic_tags_on_email($body, $this->ipn_data, $args);
 
         $this->debug_log('Applying filter - wspsc_buyer_notification_email_body', true);
         $body = apply_filters('wspsc_buyer_notification_email_body', $body, $this->ipn_data, $cart_items);            
@@ -281,9 +283,11 @@ class paypal_ipn_handler {
         }
         $notify_email = get_option('wpspc_notify_email_address');
         $seller_email_subject = get_option('wpspc_seller_email_subj');
+	$seller_email_subject = wpspc_apply_dynamic_tags_on_email($seller_email_subject, $this->ipn_data, $args);
+	
         $seller_email_body = get_option('wpspc_seller_email_body');
         $args['email_body'] = $seller_email_body;
-        $seller_email_body = wpspc_apply_dynamic_tags_on_email_body($this->ipn_data, $args);
+        $seller_email_body = wpspc_apply_dynamic_tags_on_email($seller_email_body, $this->ipn_data, $args);
 
         $this->debug_log('Applying filter - wspsc_seller_notification_email_body', true);
         $seller_email_body = apply_filters('wspsc_seller_notification_email_body', $seller_email_body, $this->ipn_data, $cart_items);

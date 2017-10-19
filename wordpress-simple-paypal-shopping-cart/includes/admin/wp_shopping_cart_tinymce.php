@@ -57,24 +57,25 @@ function wp_cart_tinymce_ajax_handler() {
             var product_name = document.getElementById('wpsppsc_product_name').value;
             var product_price = document.getElementById('wpsppsc_product_price').value;
             var shipping = document.getElementById('wpsppsc_shipping').value;
-            var sizes = document.getElementById('wpsppsc_sizes').value;
-            var colors = document.getElementById('wpsppsc_colors').value;
+            var file_url = document.getElementById('wpsppsc_file_url').value;
 
             var custom1_id = document.getElementById('wpsppsc_custom1_id').value;
             var custom1_vals = document.getElementById('wpsppsc_custom1_values').value;
 
             var custom2_id = document.getElementById('wpsppsc_custom2_id').value;
             var custom2_vals = document.getElementById('wpsppsc_custom2_values').value;
-
+            
+            var custom3_id = document.getElementById('wpsppsc_custom3_id').value;
+            var custom3_vals = document.getElementById('wpsppsc_custom3_values').value;
+            
             var seq = 1; // Shopping cart needs VAR1, VAR2 etc.
 
             // who is active ?
             if (wpsppsc.className.indexOf('current') != -1) {
                 product_name = product_name.replace(/</g, '').replace(/\n/g, '').replace(/^\s*/g, '').replace(/\s*$/g, '').replace(/:+/g, '-');
-                product_price = product_price.replace(/[^\d-.]/g, '');
-                sizes = sizes.replace(/</g, '').replace(/\n/g, '').replace(/^[\s,]*/g, '').replace(/[\s,]*$/g, '').replace(/\s*,+\s*/g, '|').replace(/:+/g, '');
-                colors = colors.replace(/</g, '').replace(/\n/g, '').replace(/^[\s,]*/g, '').replace(/[\s,]*$/g, '').replace(/\s*,+\s*/g, '|').replace(/:+/g, '');
+                product_price = product_price.replace(/[^\d-.]/g, '');                                
                 shipping = shipping.replace(/[^\d-.]/gi, '');
+                //file_url = file_url.replace(/[<>\r\n:]+/g, '').replace(/^\s*/g, '').replace(/\s*$/g, '');
 
                 custom1_id = custom1_id.replace(/[<>\r\n:]+/g, '').replace(/^\s*/g, '').replace(/\s*$/g, '');
                 custom1_vals = custom1_vals.replace(/[<>\r\n:]+/gi, '').replace(/^[\s,]*/g, '').replace(/[\s,]*$/g, '').replace(/\s*,+\s*/g, '|');
@@ -82,6 +83,9 @@ function wp_cart_tinymce_ajax_handler() {
                 custom2_id = custom2_id.replace(/[<>\r\n:]+/g, '').replace(/^\s*/g, '').replace(/\s*$/g, '');
                 custom2_vals = custom2_vals.replace(/[<>\r\n:]+/gi, '').replace(/^[\s,]*/g, '').replace(/[\s,]*$/g, '').replace(/\s*,+\s*/g, '|');
 
+                custom3_id = custom3_id.replace(/[<>\r\n:]+/g, '').replace(/^\s*/g, '').replace(/\s*$/g, '');
+                custom3_vals = custom3_vals.replace(/[<>\r\n:]+/gi, '').replace(/^[\s,]*/g, '').replace(/[\s,]*$/g, '').replace(/\s*,+\s*/g, '|');
+                
                 // Validations
                 if (product_name == '') {
                     alert('Please enter product name');
@@ -103,18 +107,12 @@ function wp_cart_tinymce_ajax_handler() {
                     extra += ' shipping="' + shipping + '"';
                 }
 
-                // eg. left_bracket2wp_cart:Demo Product 1:price:15:var1[Size|Small|Medium|Large]:end]
-                if (sizes) {
-                    extra += ' var' + seq + '="Size|' + sizes + '"';
-                    seq++;
+                //File URL
+                if (file_url){
+                    extra += ' file_url="' + file_url + '"';
                 }
-
-                if (colors) {
-                    extra += ' var' + seq + '="Colour|' + colors + '"';
-                    seq++;
-                }
-
-                // e.g. custom1_id: Format | custom1_vals: PAL, Secam
+                
+                //Product Variations. Example custom1_id: Format | custom1_vals: PAL, Secam
                 if (custom1_id) {
                     extra += ' var' + seq + '="' + custom1_id + '|' + custom1_vals + '"';
                     seq++;
@@ -125,6 +123,11 @@ function wp_cart_tinymce_ajax_handler() {
                     seq++;
                 }
 
+                if (custom3_id) {
+                    extra += ' var' + seq + '="' + custom3_id + '|' + custom3_vals + '"';
+                    seq++;
+                }
+                
                 content = template;
                 content = content.replace(/%%PRODUCT-NAME%%/ig, product_name).replace(/%%PRODUCT-PRICE%%/ig, product_price);
                 content = content.replace(/%%EXTRA%%/ig, extra);
@@ -141,7 +144,10 @@ function wp_cart_tinymce_ajax_handler() {
         <div class="panel_wrapper">
             <!-- panel -->
             <div id="wpsppsc_panel" class="panel current">
+                
+                <p>Visit the <a href="https://www.tipsandtricks-hq.com/ecommerce/wp-shopping-cart" target="_blank">Simple Cart Documentation</a> page to learn all the shortcode usage.</p>
                 <br />
+                
                 <table border="0" cellpadding="4" cellspacing="0">
                     <tr>
                         <td nowrap="nowrap">
@@ -167,7 +173,7 @@ function wp_cart_tinymce_ajax_handler() {
                     </tr>
                     <tr>
                         <td nowrap="nowrap">
-                            <label for="wpsppsc_shipping"><?php _e("Shipping", 'wordpress-simple-paypal-shopping-cart'); ?></label>
+                            <label for="wpsppsc_shipping"><?php _e("Shipping (Optional)", 'wordpress-simple-paypal-shopping-cart'); ?></label>
                         </td>
                         <td>
                             <input type="text" id="wpsppsc_shipping" name="wpsppsc_shipping" value="" />
@@ -178,79 +184,75 @@ function wp_cart_tinymce_ajax_handler() {
                     </tr>
                     <tr>
                         <td nowrap="nowrap">
-                            <label for="wpsppsc_sizes"><?php _e("Sizes", 'wordpress-simple-paypal-shopping-cart'); ?></label>
+                            <label for="wpsppsc_file_url"><?php _e("File URL (Optional)", 'wordpress-simple-paypal-shopping-cart'); ?></label>
                         </td>
                         <td>
-                            <input type="text" id="wpsppsc_sizes" name="wpsppsc_sizes" value="" />
+                            <input type="text" id="wpsppsc_file_url" name="wpsppsc_shipping" value="" />
                         </td>
                         <td>
-                            (Optional) Example: small, large, extra large
-                        </td>
-                    </tr>
-                    <tr>
-                        <td nowrap="nowrap">
-                            <label for="wpsppsc_colors"><?php _e("Colours", 'wordpress-simple-paypal-shopping-cart'); ?></label>
-                        </td>
-                        <td>
-                            <input type="text" id="wpsppsc_colors" name="wpsppsc_colors" value="" />
-                        </td>
-                        <td>
-                            (Optional) Example: blue,red,orange,black,white
+                            Example: http://www.your-site.com/wp-content/uploads/my-ebook.zip
                         </td>
                     </tr>
                     <tr>
                         <td nowrap="nowrap" colspan="3">
                             <br/>
-                            <strong>Custom Fields (Optional)</strong>
-                            <p>Example: For DVD sales | Name: Format | Values: PAL, NTSC</p>
+                            <strong>Product Variations (Optional)</strong>
+                            <p>Example: For a T-Shirt product you may want to use a variation with name "Size" and values as "Small, Medium, Large"</p>
                         </td>
                     </tr>
                     <tr>
                         <td nowrap="nowrap">
-                            <label for="wpsppsc_colors"><?php _e("Custom 1: Name", 'wordpress-simple-paypal-shopping-cart'); ?></label>
+                            <label for="wpsppsc_custom1_id"><?php _e("Variation 1: Name", 'wordpress-simple-paypal-shopping-cart'); ?></label>
                         </td>
                         <td><input type="text" id="wpsppsc_custom1_id" name="wpsppsc_custom1_id" value="" />
                         </td>
                         <td>
                             <?php _e("Values", 'wordpress-simple-paypal-shopping-cart'); ?>
-                            <input type="text" id="wpsppsc_custom1_values" name="wpsppsc_custom1_values" value="" />
+                            <input type="text" id="wpsppsc_custom1_values" name="wpsppsc_custom1_values" value="" /> Example: Small, Medium, Large
                         </td>
                     </tr>
                     <tr>
                         <td nowrap="nowrap">
-                            <label for="wpsppsc_colors"><?php _e("Custom 2: Name", 'wordpress-simple-paypal-shopping-cart'); ?></label>
+                            <label for="wpsppsc_custom2_id"><?php _e("Variation 2: Name", 'wordpress-simple-paypal-shopping-cart'); ?></label>
                         </td>
                         <td><input type="text" id="wpsppsc_custom2_id" name="wpsppsc_custom2_id" value="" />
                         </td>
                         <td>
                             <?php _e("Values", 'wordpress-simple-paypal-shopping-cart'); ?>
-                            <input type="text" id="wpsppsc_custom2_values" name="wpsppsc_custom2_values" value="" />
+                            <input type="text" id="wpsppsc_custom2_values" name="wpsppsc_custom2_values" value="" /> Example: Blue, Red, Black, White
                         </td>
                     </tr>
+                    <tr>
+                        <td nowrap="nowrap">
+                            <label for="wpsppsc_custom3_id"><?php _e("Variation 3: Name", 'wordpress-simple-paypal-shopping-cart'); ?></label>
+                        </td>
+                        <td><input type="text" id="wpsppsc_custom3_id" name="wpsppsc_custom3_id" value="" />
+                        </td>
+                        <td>
+                            <?php _e("Values", 'wordpress-simple-paypal-shopping-cart'); ?>
+                            <input type="text" id="wpsppsc_custom3_values" name="wpsppsc_custom3_values" value="" /> Example: Short, Full
+                        </td>
+                    </tr>                    
                 </table>
             </div>
             <!-- end panel -->
 
-            Note: The <a href="http://www.tipsandtricks-hq.com/ecommerce/wp-shopping-cart" target="_blank">WP Simple Shopping Cart</a>
-            allows you to use only two variations.
-            For example if you use colours and sizes you *can't* use custom fields.
-            If you use the two custom fields you *can't* use the sizes and colours fields.
-
             <div class="mceActionPanel">
-
 
                 <div style="float: left">
                     <input type="submit" id="insert" name="insert" value="<?php _e("Insert", 'wordpress-simple-paypal-shopping-cart'); ?>"
-                           class='app_positive_button  mceButton'
+                           class='app_positive_button  mceButton button-primary'
                            onclick="ui_for_ppsc_insert_content();
                                        return false;" />
                 </div>
 
                 <div style="float: right">
                     <input type="button" id="cancel" name="cancel" value="<?php _e("Cancel", 'wordpress-simple-paypal-shopping-cart'); ?>"
-                           class='app_negative_button'
+                           class='app_negative_button button'
                            onclick="tb_remove();" />
                 </div>
+                
+                <br />
             </div>
         </div>
     </form>

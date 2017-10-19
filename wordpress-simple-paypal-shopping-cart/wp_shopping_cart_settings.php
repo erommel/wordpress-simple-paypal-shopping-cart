@@ -11,10 +11,10 @@ function wp_cart_options() {
     }
 
     $wpspc_plugin_tabs = array(
-        'wordpress-paypal-shopping-cart' => 'General Settings',
-        'wordpress-paypal-shopping-cart&action=email-settings' => 'Email Settings',
-        'wordpress-paypal-shopping-cart&action=discount-settings' => 'Coupon/Discount',
-        'wordpress-paypal-shopping-cart&action=tools' => 'Tools'
+        'wordpress-paypal-shopping-cart' => __('General Settings', 'wordpress-simple-paypal-shopping-cart'),
+        'wordpress-paypal-shopping-cart&action=email-settings' => __('Email Settings', 'wordpress-simple-paypal-shopping-cart'),
+        'wordpress-paypal-shopping-cart&action=discount-settings' => __('Coupon/Discount', 'wordpress-simple-paypal-shopping-cart'),
+        'wordpress-paypal-shopping-cart&action=tools' => __('Tools', 'wordpress-simple-paypal-shopping-cart')
     );
     echo '<div class="wrap">';
     echo '<h1>' . (__("WP Paypal Shopping Cart Options", "wordpress-simple-paypal-shopping-cart")) . '</h1>';

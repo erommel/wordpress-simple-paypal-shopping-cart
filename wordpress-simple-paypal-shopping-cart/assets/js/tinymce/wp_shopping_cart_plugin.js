@@ -11,7 +11,7 @@
          */
         init: function (ed, url) {
             ed.addButton('wp_cart_shortcode', {
-                image: url + '/icon.png',
+                icon: 'wp-cart-tinymce',
                 tooltip: 'WP Cart Shortcode',
                 cmd: 'wp_cart_shortcode'
             });

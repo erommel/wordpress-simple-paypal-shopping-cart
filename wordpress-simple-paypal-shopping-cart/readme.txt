@@ -4,7 +4,7 @@ Donate link: https://www.tipsandtricks-hq.com
 Tags: cart, shopping cart, WordPress shopping cart, Paypal shopping cart, sell, selling, sell products, online shop, shop, e-commerce, wordpress ecommerce, wordpress store, store, PayPal cart widget, sell digital products, sell service, digital downloads, paypal, paypal cart, e-shop, compact cart, coupon, discount
 Requires at least: 3.0
 Tested up to: 4.8
-Stable tag: 4.3.5
+Stable tag: 4.3.7
 License: GPLv2 or later
 
 Very easy to use Simple WordPress Paypal Shopping Cart Plugin. Great for selling products online in one click from your WordPress site.
@@ -53,11 +53,13 @@ or
 * Compatible with WordPress Multi-site Installation.
 * Ability to specify SKU (item number) for each of your products in the shortcode.
 * Ability to customize the add to cart button image and use a custom image for your purchase buttons.
+* Ability to customize the add to cart button text via shortcode parameter on a per product basis.
 * Track coupons with the order to see which customer used which coupon code.
 * Ability to add a compact shopping cart to your site using a shortcode.
 * Ability to show shopping cart with product image thumbnails.
 * Ability to use a custom checkout page style.
 * Ability to open checkout page in a new browser tab/window.
+* Ability to use TinyMCE shortcode inserter to add shortcodes to your posts/pages.
 * Works nicely with responsive WordPress themes.
 * Can be translated into any language.
 * and more...
@@ -186,6 +188,20 @@ Visit the plugin site at https://www.tipsandtricks-hq.com/wordpress-simple-paypa
 None
 
 == Changelog ==
+
+= 4.3.7 =
+- Added Russian Ruble currency to the currency dropdown option.
+- Added CSS class to the quantity input field in the cart.
+- Copied the nextgen gallery template to the root folder.
+- The email merge tags can now be used in the sale notification email subject.
+- Added a new parameter (button_text) for the add to cart button shortcode. This parameter can be used to specify a custom button text for the add to cart button. Usage instructions at the following page:
+https://www.tipsandtricks-hq.com/ecommerce/simple-shopping-cart-customize-the-add-to-cart-button-text-via-shortcode-4383
+
+= 4.3.6 =
+- There is now a basic shortcode inserter for this plugin in the wp post/page editor.
+- The cart orders search functionality can now search records using customer's email and name.
+- Added CSS classes to the variation drop-downs.
+- CSS optimization in the settings interface of the plugin.
 
 = 4.3.5 =
 - The deprecated page styles field has been replaced with an image URL field in the settings. 

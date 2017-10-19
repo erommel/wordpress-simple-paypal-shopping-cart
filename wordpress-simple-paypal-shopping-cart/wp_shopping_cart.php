@@ -2,7 +2,7 @@
 
 /*
   Plugin Name: WP Simple Paypal Shopping cart
-  Version: 4.3.5
+  Version: 4.3.7
   Plugin URI: https://www.tipsandtricks-hq.com/wordpress-simple-paypal-shopping-cart-plugin-768
   Author: Tips and Tricks HQ, Ruhul Amin, mra13
   Author URI: https://www.tipsandtricks-hq.com/
@@ -27,7 +27,7 @@ if (version_compare(PHP_VERSION, '5.4.0') >= 0) {
     }
 }
 
-define('WP_CART_VERSION', '4.3.5');
+define('WP_CART_VERSION', '4.3.7');
 define('WP_CART_FOLDER', dirname(plugin_basename(__FILE__)));
 define('WP_CART_PATH', plugin_dir_path(__FILE__));
 define('WP_CART_URL', plugins_url('', __FILE__));
@@ -51,9 +51,9 @@ include_once('wp_shopping_cart_utility_functions.php');
 include_once('wp_shopping_cart_shortcodes.php');
 include_once('wp_shopping_cart_misc_functions.php');
 include_once('wp_shopping_cart_orders.php');
-include_once('wp_shopping_cart_tinymce.php');
 include_once('class-coupon.php');
 include_once('includes/wspsc-cart-functions.php');
+include_once('includes/admin/wp_shopping_cart_tinymce.php');
 
 function always_show_cart_handler($atts) {
     return print_wp_shopping_cart($atts);
@@ -503,7 +503,7 @@ function print_wp_cart_button_for_product($name, $price, $shipping = 0, $var1 = 
         $var1_pieces = explode('|', $var1);
         $variation1_name = $var1_pieces[0];
         $var_output .= '<span class="wp_cart_variation_name">' . $variation1_name . ' : </span>';
-        $var_output .= '<select name="variation1" onchange="ReadForm (this.form, false);">';
+        $var_output .= '<select name="variation1" class="wp_cart_variation1_select" onchange="ReadForm (this.form, false);">';
         for ($i = 1; $i < sizeof($var1_pieces); $i++) {
             $var_output .= '<option value="' . $var1_pieces[$i] . '">' . $var1_pieces[$i] . '</option>';
         }
@@ -513,7 +513,7 @@ function print_wp_cart_button_for_product($name, $price, $shipping = 0, $var1 = 
         $var2_pieces = explode('|', $var2);
         $variation2_name = $var2_pieces[0];
         $var_output .= '<span class="wp_cart_variation_name">' . $variation2_name . ' : </span>';
-        $var_output .= '<select name="variation2" onchange="ReadForm (this.form, false);">';
+        $var_output .= '<select name="variation2" class="wp_cart_variation2_select" onchange="ReadForm (this.form, false);">';
         for ($i = 1; $i < sizeof($var2_pieces); $i++) {
             $var_output .= '<option value="' . $var2_pieces[$i] . '">' . $var2_pieces[$i] . '</option>';
         }
@@ -523,7 +523,7 @@ function print_wp_cart_button_for_product($name, $price, $shipping = 0, $var1 = 
         $var3_pieces = explode('|', $var3);
         $variation3_name = $var3_pieces[0];
         $var_output .= '<span class="wp_cart_variation_name">' . $variation3_name . ' : </span>';
-        $var_output .= '<select name="variation3" onchange="ReadForm (this.form, false);">';
+        $var_output .= '<select name="variation3" class="wp_cart_variation3_select" onchange="ReadForm (this.form, false);">';
         for ($i = 1; $i < sizeof($var3_pieces); $i++) {
             $var_output .= '<option value="' . $var3_pieces[$i] . '">' . $var3_pieces[$i] . '</option>';
         }
@@ -538,8 +538,11 @@ function print_wp_cart_button_for_product($name, $price, $shipping = 0, $var1 = 
     }
 
     if (isset($atts['button_image']) && !empty($atts['button_image'])) {
-        //Use the custom button image for this shortcode
+        //Use the custom button image specified in the shortcode
         $replacement .= '<input type="image" src="' . $atts['button_image'] . '" class="wp_cart_button" alt="' . (__("Add to Cart", "wordpress-simple-paypal-shopping-cart")) . '"/>';
+    } else if (isset($atts['button_text']) && !empty($atts['button_text'])) {
+        //Use the custom button text specified in the shortcode        
+        $replacement .= '<input type="submit" class="wspsc_add_cart_submit" name="wspsc_add_cart_submit" value="' . apply_filters('wspsc_add_cart_submit_button_value', $atts['button_text'], $price) . '" />';
     } else {
         //Use the button text or image value from the settings
         if (preg_match("/http:/", $addcart) || preg_match("/https:/", $addcart)) {
@@ -693,6 +696,10 @@ function wspsc_admin_side_enqueue_scripts() {
     }
 }
 
+function wspsc_admin_side_styles() {
+    wp_enqueue_style('wspsc-admin-style', WP_CART_URL . '/assets/wspsc-admin-styles.css', array(), WP_CART_VERSION);
+}
+
 function wspsc_front_side_enqueue_scripts() {
     wp_enqueue_style('wspsc-style', WP_CART_URL . '/wp_shopping_cart_style.css', array(), WP_CART_VERSION);
 }
@@ -731,3 +738,4 @@ if (!is_admin()) {
 add_action('wp_head', 'wp_cart_add_read_form_javascript');
 add_action('wp_enqueue_scripts', 'wspsc_front_side_enqueue_scripts');
 add_action('admin_enqueue_scripts', 'wspsc_admin_side_enqueue_scripts');
+add_action('admin_print_styles', 'wspsc_admin_side_styles');
